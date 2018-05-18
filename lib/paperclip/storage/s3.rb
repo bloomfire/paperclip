@@ -456,7 +456,7 @@ module Paperclip
       private
 
       def aws_v1?
-        Gem::Version.new(AWS_CLASS::VERSION) < Gem::Version.new(2)
+        AWS_CLASS == ::AWS
       end
 
       def find_credentials creds
