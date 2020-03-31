@@ -236,6 +236,11 @@ module Paperclip
     # the instance's errors and returns false, cancelling the save.
     def save
       flush_deletes unless @options[:keep_old_files]
+      # Don't write :original to S3 if it wasn't explicitly reprocessed
+      # https://github.com/thoughtbot/paperclip/pull/1993
+      if @options[:only_process].any? && !@options[:only_process].include?(:original)
+        @queued_for_write.except!(:original)
+      end
       flush_writes
       @dirty = false
       true
